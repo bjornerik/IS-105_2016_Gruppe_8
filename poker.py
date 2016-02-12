@@ -2,8 +2,8 @@ import collections
 import itertools
 import random
 
-SUIT_LIST = ("Hearts", "Spades", "Diamonds", "Clubs")
-NUMERAL_LIST = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace")
+TYPE = ("Hjerter", "Spar", "Ruter", "Klover")
+VERDI = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "Knekt", "Dronning", "Konge", "Ess")
 
 class card:
     def __init__(self, numeral, suit):
@@ -17,7 +17,7 @@ class poker_hand():
     def __init__(self, card_list):
         self.card_list = card_list
     def __repr__(self):
-        short_desc = "Nothing."
+        short_desc = "Ingenting."
         numeral_dict = collections.defaultdict(int)
         suit_dict = collections.defaultdict(int)
         for my_card in self.card_list:
@@ -25,26 +25,26 @@ class poker_hand():
             suit_dict[my_card.suit] += 1
         # Pair
         if len(numeral_dict) == 4:
-            short_desc = "One pair."
+            short_desc = "Et par."
         # Two pair or 3-of-a-kind
         elif len(numeral_dict) == 3:
             if 3 in numeral_dict.values():
-                short_desc ="Three-of-a-kind."
+                short_desc ="Tre like."
             else:
-                short_desc ="Two pair."
+                short_desc ="To par."
         # Full house or 4-of-a-kind
         elif len(numeral_dict) == 2:
             if 2 in numeral_dict.values():
-                short_desc ="Full house."
+                short_desc ="Fult hus."
             else:
-                short_desc ="Four-of-a-kind."
+                short_desc ="Fire like."
         else:
             # Flushes and straights
             straight, flush = False, False
             if len(suit_dict) == 1:
                 flush = True
-            min_numeral = min([NUMERAL_LIST.index(x) for x in numeral_dict.keys()])
-            max_numeral = max([NUMERAL_LIST.index(x) for x in numeral_dict.keys()])
+            min_numeral = min([VERDI.index(x) for x in numeral_dict.keys()])
+            max_numeral = max([VERDI.index(x) for x in numeral_dict.keys()])
             if int(max_numeral) - int(min_numeral) == 4:
                 straight = True
             # Ace can be low
@@ -62,7 +62,7 @@ class poker_hand():
 
 class deck(set):
     def __init__(self):
-        for numeral, suit in itertools.product(NUMERAL_LIST, SUIT_LIST):
+        for numeral, suit in itertools.product(VERDI, TYPE):
             self.add(card(numeral, suit))
     def get_card(self):
         a_card = random.sample(self, 1)[0]
