@@ -6,12 +6,12 @@ TYPE = ("Hjerter", "Spar", "Ruter", "Klover")
 VERDI = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "Knekt", "Dronning", "Konge", "Ess")
 
 class card:
-    def __init__(self, numeral, suit):
-        self.numeral = numeral
-        self.suit = suit
-        self.card = self.numeral, self.suit
+    def __init__(self, verdi, kortfarve):
+        self.verdi = verdi
+        self.kortfarve = kortfarve
+        self.card = self.verdi, self.kortfarve
     def __repr__(self):
-        return self.numeral + "-" + self.suit
+        return self.verdi + "-" + self.kortfarve
 
 class poker_hand():
     def __init__(self, card_list):
@@ -21,8 +21,8 @@ class poker_hand():
         numeral_dict = collections.defaultdict(int)
         suit_dict = collections.defaultdict(int)
         for my_card in self.card_list:
-            numeral_dict[my_card.numeral] += 1
-            suit_dict[my_card.suit] += 1
+            numeral_dict[my_card.verdi] += 1
+            suit_dict[my_card.kortfarve] += 1
         # Pair
         if len(numeral_dict) == 4:
             short_desc = "Et par."
@@ -62,8 +62,8 @@ class poker_hand():
 
 class deck(set):
     def __init__(self):
-        for numeral, suit in itertools.product(VERDI, TYPE):
-            self.add(card(numeral, suit))
+        for verdi, kortfarve in itertools.product(VERDI, TYPE):
+            self.add(card(verdi, kortfarve))
     def get_card(self):
         a_card = random.sample(self, 1)[0]
         self.remove(a_card)
@@ -74,5 +74,6 @@ class deck(set):
         else:
             raise NotImplementedError
 
-for i in range(5):
+for i in range(input("Hvor mange spillere skal delta?")):
     print(deck().get_hand())
+    
