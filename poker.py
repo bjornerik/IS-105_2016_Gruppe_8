@@ -2,7 +2,7 @@ import collections
 import itertools
 import random
 
-TYPE = ("Hjerter", "Spar", "Ruter", "Klover")
+TYPE = (u'\u0420\u043e\u0441\u0441\u0438\u044f', "Spar", "Ruter", "Klover")
 VERDI = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "Knekt", "Dronning", "Konge", "Ess")
 
 class card:
@@ -11,7 +11,7 @@ class card:
         self.kortfarve = kortfarve
         self.card = self.verdi, self.kortfarve
     def __repr__(self):
-        return self.verdi + "-" + self.kortfarve
+        return self.kortfarve + ' ' + self.verdi
 
 class poker_hand():
     def __init__(self, card_list):
@@ -35,7 +35,7 @@ class poker_hand():
         # Full house or 4-of-a-kind
         elif len(numeral_dict) == 2:
             if 2 in numeral_dict.values():
-                short_desc ="Fult hus."
+                short_desc ="Hus."
             else:
                 short_desc ="Fire like."
         else:
