@@ -17,21 +17,21 @@ def slow_engine(liste, word):
 
 def test():
     total = 0.0
-    for i in range(100):
+    for i in range(1000):
         start = timer()   
         fast_engine(liste,"hei")
         end = timer()
         total = total + (end-start)
-    print "Gjennomsnittlig tid for fast_engine er %f" %(total/100)
+    print "Gjennomsnittlig tid for fast_engine er %f" %(total/1000)
     
 def test2():
     total = 0.0
-    for i in range(100):
+    for i in range(1000):
         start = timer()   
         slow_engine(liste,"hei")
         end = timer()
         total = total + (end-start)
-    print "Gjennomsnittlig tid for slow_engine er %f" %(total/100)
+    print "Gjennomsnittlig tid for slow_engine er %f" %(total/1000)
     
 
 test()
