@@ -1,13 +1,9 @@
-import unittest
-from is105 import sub
-
-class TestSub(unittest.Testcase):
-    def setUp(self):
-        pass
-    def test_numbers_20_7(self):
-        self.assertEqual(sub(20,7), 15)
-        
-        
-if_name_=="_main_":
-    unittset.main()
-
+str = raw_input("Enter code")
+#str = "0" + str[2:]
+message = ""
+while str != "":
+    i = chr(int(str[:8],2))
+    message=message+i
+    str=str[8:]
+    
+print message
