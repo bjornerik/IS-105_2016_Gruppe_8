@@ -11,7 +11,7 @@ r = sr.Recognizer()
 m = sr.Microphone()
 
 try:
-    print("Vær stille")
+    print("Stille")
     with m as source: r.adjust_for_ambient_noise(source)
     print("Sett energi grense til {}".format(r.energy_threshold))
     while True:
@@ -24,11 +24,11 @@ try:
 
             # Omgjør og printer utf kode til output
             if str is bytes:
-                print(u"You said {}".format(value).encode("utf-8"))
+                print(u"Du sa {}".format(value).encode("utf-8"))
                 engine.say('Hello Sjur, how are you today?')
                 engine.runAndWait()
             else:
-                print("You said {}".format(value))
+                print("Du sa {}".format(value))
         except sr.UnknownValueError:
             print("Si det igjen")
         except sr.RequestError as e:

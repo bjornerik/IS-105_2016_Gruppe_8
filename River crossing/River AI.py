@@ -1,8 +1,14 @@
+import time
+
+# Legger string i variabel for bruk i algoritmen.
+# Lager en tuple av mulige baereobjekter for bonden
 farmer,chicken,grain,fox=("farmer","chicken","grain","fox")
 carryables=(chicken,grain,fox,None)
 
+# Definerer forbudte sett
 forbiddens=(set((chicken,grain)), set((fox,chicken)))
 
+# Sjekker om forbudte tilstander skjer.
 def mayhem(cfg):
     for shore in cfg[0]:
         if farmer not in shore:
@@ -11,26 +17,28 @@ def mayhem(cfg):
                     return True
     return False
 
+#Definererer naar spillet er ferdig
 def done(cfg):
     left,right=cfg[0]
     return left==set()
     
-# Let the farmer ferry across the river, taking an item with him.
-# 'item' can be None is the farmer is to take nothing with him.
-# Return the new configuration, or None is the crossing can't be performed
-# because the item is not on the same shore as the farmer.
+# Definerer baaten som bonden kan ta med items i.
+# Bonden maa ikke ha med noen items, man tolker det da som item "None"
+# Til slutt returneres den nye tilstanden, hvis ikke tilstanden er mulig, returneres "None".
 def ferry(cfg,item):
-    left,right=[set(x) for x in cfg[0]] # make copies, because 'left' and 'right' will be mutated
-    # determine on which shore the farmer is, and to which shore he will ferry
+    desc = ""
+    left,right=[set(x) for x in cfg[0]] # Lager kopier av sidene, da de vil bli endret.
+    # Bestemmer hvor bonden er, og hvor han skal.
     if farmer in left:
         src,dst=left,right
+        desc+= "->"
     else:
         src,dst=right,left
-    # make sure that if there's an item to carry, it is on the same shore as the farmer
+        desc+= "<-"
+    # Sjekker om item'et bonden skal ha, faktisk er paa bondens side.
     if item and not item in src:
         return None
-    # cross the farmer and possibly the item
-    desc="The farmer goes -->" if farmer in left else "The farmer goes <--"
+    
     src.remove(farmer)
     dst.add(farmer)
     if item:
@@ -83,7 +91,3 @@ solutionstack=[]
 print ("Trace of the recursive solution-finding process:")
 generate(cfg)
 
-print ("\nThe solution to the problem:")
-for step in solutionstack:
-    if step:
-        print ("  ",step)
