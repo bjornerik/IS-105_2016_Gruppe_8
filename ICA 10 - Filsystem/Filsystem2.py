@@ -8,7 +8,7 @@ def isdir(dirname):
     return os.path.exists(dirname)
 
 def isfile(fil):
-    return os.path.isfile(fil)
+    return os.path.isfile(fil + ".txt")
 
 class Folder(object):
     def __init__(self, name):
@@ -24,25 +24,21 @@ class File(object):
         file.close()  
         
 def write(name, text):
-    with open(name) as f:
+    with open(name + ".txt", "w") as f:
         f.write(text)
         f.close()
         
 def read(name):
-    with open(name) as f:
+    with open(name + ".txt") as f:
         print(f.read())
         f.close()
         
 def searchWord(name, word):
-    with open(name) as f:
-        found = False
-        while not found:
-            for n in f:
-                if n == word:
-                    print (word + " is found at line" + len(n))
-                    found = True
-            print(word + " was not found in the file")
-        f.close()
+    with open(name + ".txt") as f:
+        for line in f:
+            if word in line:
+                print(word + " is found at position " + str(len(line)) + " in " + name)
+    
 
     
 def displayCommands(path):
@@ -108,7 +104,7 @@ def fileloop():
                     
             if command == "cd..":
                 count = 1
-                os.chdir(path)
+                os.chdir("C:\\Users\Sjur\Documents\Filsystem")
                     
             if command == "createfile":
                 filnavn = input("What do you want to name the file?\n")
