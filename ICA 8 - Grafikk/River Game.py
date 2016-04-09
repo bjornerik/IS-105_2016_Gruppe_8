@@ -265,11 +265,11 @@ class LeftShore(State):
 class InBoat(State):
     
     def enter(self):
-        """if (['chicken'] in d.river_left) and (['grain'] in d.river_left) or (['chicken'] in d.river_right) and (['grain'] in d.river_right):
-            return 'lost'"""
+        if (['chicken'] in d.river_left) and (['grain'] in d.river_left) or (['chicken'] in d.river_right) and (['grain'] in d.river_right):
+            return 'lost'
         
-        """if (['chicken'] in d.river_left) and (['fox'] in d.river_left) and (['man'] not in d.river_left) or (['chicken'] in d.river_right) and (['fox'] in d.river_right) and (['man'] not in d.river_right):
-            return 'lost'"""
+        if (['chicken'] in d.river_left) and (['fox'] in d.river_left) and (['man'] not in d.river_left) or (['chicken'] in d.river_right) and (['fox'] in d.river_right) and (['man'] not in d.river_right):
+            return 'lost'
         
         if d.boat in d.river_left:
             fax = 220
@@ -462,139 +462,11 @@ def message(text):
 
 
 
-d = Database([['chicken'], ['fox'], ['man'], ['grain']])
-a_map = Map('leftshore')
-a_game = StateMachine(a_map)
-a_game.play()       
-    
-"""        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                finished = True          
-            
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
-                    pass
-                if event.key == pygame.K_r:
-                    pass
-                if event.key == pygame.K_a:
-                    pass
-                if event.key == pygame.K_w:
-                    pass
-                if event.key == pygame.K_s:
-                    pass                
-                if event.key == pygame.K_e:
-                    pass
-                if event.key == pygame.K_f:
-                    pass
-                                
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_q:
-                    if not gx == 280 or fox == 280:
-                        if cx == 10:
-                            cx += 270 
-                            cy += 40
-                        elif cx == 660:
-                            cx -= 130
-                            cy += 40
-                        else:
-                            pass
-                if event.key == pygame.K_r:
-                    if bx == 200:
-                        if cx == 280:
-                            cx += 250
-                        elif gx == 280:
-                            gx += 250
-                        elif fox == 280:
-                            fox += 250
-                        fax += 250
-                        bx += 250   
-                    elif bx == 450:
-                        if cx == 530:
-                            cx -= 250
-                        elif gx == 530:
-                            gx -= 250
-                        elif fox == 530:
-                            fox -= 250
-                        fax -= 250
-                        bx -= 250
-                    else:
-                        pass
-                if event.key == pygame.K_a:
-                    if cx == 280:
-                        cx -= 270 
-                        cy -= 40
-                    elif cx == 530:
-                        cx += 130
-                        cy -= 40
-                    else:
-                        pass
-                if event.key == pygame.K_w:
-                    if not cx == 280 or fox == 280:
-                        if gx == 70:
-                            gx += 210 
-                            gy += 40
-                        if cx == 730:
-                            gx -= 200
-                            gy += 40
-                if event.key == pygame.K_s:
-                    if gx == 280:
-                        gx -= 210 
-                        gy -= 40
-                    if gx == 530:
-                        gx += 200
-                        gy -= 40
-                if event.key == pygame.K_e:
-                    if not cx == 280 or gx == 280:
-                        if fox == 130:
-                            fox += 150 
-                            foy += 40
-                        if fox == 600:
-                            fox -= 70
-                            foy += 40
-                if event.key == pygame.K_f:
-                    if fox == 280:
-                        fox -= 150 
-                        foy -= 40
-                    if fox == 530:
-                        fox += 70
-                        foy -= 40
-            
-            if bx == 200 and fox == 600 and cx == 660:
-                forbidden(2)
-            
-            if bx == 200 and cx == 660 and gx == 730:
-                forbidden(3)
-            
-            if bx == 450 and cx == 10 and fox == 130:
-                forbidden(1)
-            
-            if bx == 450 and cx == 10 and gx == 70:
-                forbidden(3)
-                        
-            if fox == 600 and gx == 730 and cx == 660:
-                victory = True     
-    
-        fax += faxchange
-        cx += cxchange
-        gx += gxchange
-        fox += foxchange
-    
-        gameDisplay.fill((white))
-        earthObject(0,400)
-        waterobject(200,450)
-        earthObject(600,400)
-        instruct(0,0)
-        farmerobject(fax,fay)
-        grainobject(gx,gy)
-        chickenobject(cx,cy)
-        foxobject(fox,foy) 
-        boatobject(bx,by)
-        
-        if victory:
-            message('Du vant!!')
-    
-        pygame.display.update()
-        clock.tick(60)    """
 
-pygame.quit()
-quit()
+if __name__ == "__main__":
+    d = Database([['chicken'], ['fox'], ['man'], ['grain']])
+    a_map = Map('leftshore')
+    a_game = StateMachine(a_map)
+    a_game.play()       
+    pygame.quit()
+    quit()
