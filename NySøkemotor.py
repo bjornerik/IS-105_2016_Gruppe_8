@@ -1,7 +1,9 @@
 import Ordliste as ol
 from timeit import default_timer as timer
+import time
 
 liste = ol.Ordliste
+
 def fast_engine(liste, word):
     for item in liste:
         if item == word:
@@ -17,21 +19,23 @@ def slow_engine(liste, word):
 
 def test():
     total = 0.0
-    for i in range(1000):
+    for i in range(5):
         start = timer()   
-        fast_engine(liste,"hei")
+        fast_engine(liste,"abandon")
         end = timer()
         total = total + (end-start)
-    print "Gjennomsnittlig tid for fast_engine er %f" %(total/1000)
+        time.sleep(1)
+    print "Gjennomsnittlig tid for fast_engine er %f" %(total/5)
     
 def test2():
     total = 0.0
-    for i in range(1000):
+    for i in range(5):
         start = timer()   
-        slow_engine(liste,"hei")
+        slow_engine(liste,"abandon")
         end = timer()
         total = total + (end-start)
-    print "Gjennomsnittlig tid for slow_engine er %f" %(total/1000)
+        time.sleep(1)
+    print "Gjennomsnittlig tid for slow_engine er %f" %(total/5)
     
 
 test()

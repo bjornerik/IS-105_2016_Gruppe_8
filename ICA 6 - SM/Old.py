@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from SM import SM
 
-class River(SM):
+class River(object):
     
     river_left = []
     boat = ["boat"]
@@ -194,44 +193,25 @@ class River(SM):
         elif shore == "boat":
                 self.boat.remove(item)
             
-def unittest():
-        
-    # Test cases 
-    r = River([['chicken'], ['fox'], ['man'], ['grain']])
-    r.start()
-    r.database() # Data representasjon av verden til enhver tid
-    r.view()
-    r.putin(['chicken'])
-    print ("-----------------------------------")
-    r.view()
-    r.database()
-    r.takeout(['chicken'])
-    print ("-----------------------------------")
-    r.view()
-    r.database()
-    r.putin(['grain'])
-    r.view()
-    r.database()
-    r.takeout(['grain'])
-    r.putin(['fox'])
-    r.database()
-    r.view()
-    r.crossriver()
-    r.database()
-    r.view()
-    r.takeout(['fox'])
-    r.database()
-    print("---------")
-    r.crossriver()
-    r.database()
-
+def displaycommands():
+    print ("The following commands is valid ")
+    print ("quit")
+    print ("database")
+    print ("view")
+    print ("putin")
+    print ("takeout")
+    print ("crossriver")
+    
 def main():
     r = River([['chicken'], ['fox'], ['man'], ['grain']])
-    r.start()
     x = True
+    print ("Write cmd to display commands")
     while x:
         command = input("> ")
-        if command == "quit":
+        if command == "cmd":
+            displaycommands()
+        
+        elif command == "quit":
             x = False
         
         elif command == "view":
@@ -253,6 +233,7 @@ def main():
             
         else:
             print ("Invalid command")
+            displaycommands()
         
         if (len(r.river_right) == 5) and (len(r.boat) == 1):
             input("You won, congratulations! Press enter to end")

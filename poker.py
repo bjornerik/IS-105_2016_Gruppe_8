@@ -2,7 +2,7 @@ import collections
 import itertools
 import random
 
-TYPE = (u'\u0420\u043e\u0441\u0441\u0438\u044f', "Spar", "Ruter", "Klover")
+TYPE = ("Hjerter", "Spar", "Ruter", "Klover")
 VERDI = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "Knekt", "Dronning", "Konge", "Ess")
 
 class card:
