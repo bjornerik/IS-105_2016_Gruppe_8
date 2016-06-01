@@ -1,141 +1,189 @@
-import os.path
+"""Kilde: http://technoslab.blogspot.no/2014/08/write-python-program-for-creating.html
+Kilde: https://docs.python.org/2/library/mmap.html"""
+
 import sys
-import mmap
+import shelve
+import time
 
-os.chdir("C:\\Users\Sjur\Documents\Filsystem")   
-
-def isdir(dirname):
-    return os.path.exists(dirname)
-
-def isfile(fil):
-    return os.path.isfile(fil + ".txt")
-
-class Folder(object):
-    def __init__(self, name):
-        self.name = name
-        if not os.path.exists(self.name):
-            os.mkdir(self.name) 
-        
 class File(object):
-    def __init__(self, navn):
-        self.navn = navn
-        file = open((navn + ".txt"), "w")
-        file.write(" ")
-        file.close()  
-        
-def write(name, text):
-    with open(name + ".txt", "w") as f:
-        f.write(text)
-        f.close()
-        
-def read(name):
-    with open(name + ".txt") as f:
-        print(f.read())
-        f.close()
-        
-def searchWord(name, word):
-    with open(name + ".txt") as f:
-        for line in f:
-            if word in line:
-                print(word + " is found at position " + str(len(line)) + " in " + name)
-    
 
-    
-def displayCommands(path):
-    print("The following commands is possible")
-    if path == "1":
-        print("isdir")
-        print("opendir")
-        print("createdir")
-        print("quit")
-    if path == "2":
-        print("isfile")
-        print("cd..")
-        print("createfile")
-        print("write")
-        print("read")
-        print("searchWord")
-        print("quit")
-    
-def fileloop():
-    x = True
-    count = 1
-    
-    
-    while x:
-        path = os.getcwd()
-        print ("You are here: ")
-        #print (" \ ".join(path))
-        print (path)
-        print ("Type cmd to display possible commands")
-        command = input(">")
-        if command == "quit":
-            x = False
-        if count == 1:
-            if command == "cmd":
-                displayCommands("1")
-            if command == "isdir":
-                thedirectory = input("Which folder do you want to check if exist?\n")
-                if isdir(thedirectory):
-                    print(thedirectory + " finnes")
-                else:
-                    print(thedirectory + " finnes ikke")                    
-            if command == "opendir":
-                thedirectory = input("Which folder do you want to open?\n")
-                if isdir(thedirectory):
-                    count = 2
-                    os.chdir(thedirectory)
-                else: 
-                    print ("The folder you tried to open doesn't exist")
+    def __init__(self, name, type, parent=None, text=''):
+        self.list = []
+        self.name = name
+        self.type = type
+        self.parent = parent
+        self.text = text
 
-            if command == "createdir":
-                navn = input("What do you want to name the folder?\n")
-                Folder(navn)
+    def is_file(self, name):
+        for node in self.list:
+            if node.name == name:
+                return True
+        return False
+
+    def is_dir(self, name):
+        if(self.is_file(name)) and self.get(name).type == 'dir':
+            return True
+        return False
+
+    def get(self, name):
+        for node in self.list:
+            if node.name == name:
+                return node
         
-        if count == 2:
-            if command == "cmd":
-                displayCommands("2")            
-            if command == "isfile":
-                thefile = input("Which file do you want to check if exist?\n")
-                if isfile(thefile):
-                    print(thefile + " finnes")
-                else:
-                    print(thefile + " finnes ikke")
-                    
-            if command == "cd..":
-                count = 1
-                os.chdir("C:\\Users\Sjur\Documents\Filsystem")
-                    
-            if command == "createfile":
-                filnavn = input("What do you want to name the file?\n")
-                File(filnavn)
+    def add(self, name, type, text=''):
+        self.list.append(File(name, type, self, text))
+             
+    def remove(self, name):
+        self.list.remove(self.get(name))
             
-            if command == "write":
-                thefile = input("Which file do you want to write in?\n")
-                if isfile(thefile):
-                    text = input("What do you want to write?\n")
-                    write(thefile, text)
-                    print (text + "\nwas written in " + thefile)
-                else:
-                    print ("The file you tried to open doesn't exist")
+    def rename(self, name):
+        self.name = name
+
+    def copy(self, src, dest):
+        src = self.get(src)
+        self.add(dest, src.type, src.text)
+
+    def stat(self):
+        print ('Listing', self.name)
+        for node in self.list:
+            print ('Name:', node.name, '; Type:', node.type)
             
-            if command == "read":
-                thefile = input("Which file do you want to read?\n")
-                if isfile(thefile):
-                    read(thefile)
-                else:
-                    print ("The file you tried to open doesn't exist")        
-            
-            if command == "searchWord":
-                thefile = input("Which file do you want to search in?\n")
-                if isfile(thefile):
-                    word = input("What word do you want to search for?\n")
-                    searchWord(thefile, word)
-                else:
-                    print ("The file you tried to open doesn't exist") 
+    def read(self):
+        print ('Reading file:', self.name)
+        print (self.text)
+        
+class FileSystem(object):
+    
+    COMMANDS = ['ls', 'mkdir', 'chdir', 'cd', 'rmdir', 'create', 'read', 'rm', 'mv', 'cp', 'help', 'exit']
+    
+    def __init__(self):
+        self.io = shelve.open('file.sys', writeback=True)
+        self.root = File('/', 'dir')
+        self.curr = self.root
+
+    def mkdir(self, cmd):
+        if len(cmd) < 2 or cmd[1] == '':
+            print ('mkdir - make directory')
+            print ('usage: mkdir <dir_name>')
+        else:
+            name = cmd[1]
+            if self.curr.is_file(name) == False:
+                self.curr.add(name, 'dir')
+            else:
+                print (name, ' - already exists.')
+
+    def chdir(self, cmd):
+        if len(cmd) < 2 or cmd[1] == '':
+            print ('chdir - change directory.')
+            print ('usage: chdir <dir_name>')
+        else:
+            name = cmd[1]
+            if name == '..':
+                if self.curr.parent is not None:
+                    self.curr = self.curr.parent
+            elif self.curr.is_dir(name):
+                self.curr = self.curr.get(name)
+            else:
+                print (name, ' - invalid directory.')
+
+    def rmdir(self, cmd):
+        if len(cmd) < 2 or cmd[1] == '':
+            print ('rmdir - remove directory')
+            print ('usage: rmdir <dir_name>')
+        else:
+            name = cmd[1]
+            if self.curr.is_dir(name):
+                self.curr.remove(name)
+                print ('Directory deleted.')
+            else:
+                print (name, ' - invalid directory.')
                 
-fileloop()
-                
+    
+    def rm(self, cmd):
+        if len(cmd) < 2 or cmd[1] == '':
+            print ('rm - remove file')
+            print ('usage: rm <file_name>')
+        else:
+            name = cmd[1]
+            if self.curr.is_file(name) and not self.curr.is_dir(name):
+                self.curr.remove(name)
+                print ('File deleted.')
+            else:
+                print (name, ' - invalid file.')
+
+    def ls(self, cmd):
+        if(len(cmd) > 1):
+            print ('ls - list stats')
+            print ('usage: ls')
+        self.curr.stat()
+
+    def create(self, cmd):
+        if len(cmd) < 2 or cmd[1] == '':
+            print ('create - create a file')
+            print ('usage: create <file_name>')
+        else:
+            name = cmd[1]
+            self.curr.add(name, 'file', input('Enter file context: '))
+            
+    def read(self, cmd):
+        if len(cmd) < 2 or cmd[1] == '':
+            print ('read - read a file')
+            print ('usage: read <file_name>')
+        else:
+            name = cmd[1]
+            if self.curr.is_file(name):
+                self.curr.get(name).read()
+            else:
+                print (name, 'invalid file')
+
+    def mv(self, cmd):
+        if len(cmd) < 3 or cmd[1] == '':
+            print ('mv - rename a file')
+            print ('usage: mv <old_name> <new_name>')
+        else:
+            old_name = cmd[1]
+            new_name = cmd[2]
+            if self.curr.is_file(old_name):
+                self.curr.get(old_name).rename(new_name)
+            else:
+                print (old_name, 'invalid file')
+    def cp(self, cmd):
+        if len(cmd) < 3 or cmd[1] == '':
+            print ('cp - copy a file')
+            print ('usage: cp <src> <dest>')
+        else:
+            src = cmd[1]
+            dest = cmd[2]
+            if self.curr.is_file(src):
+                self.curr.copy(src, dest)
+            else:
+                print (src, 'invalid file')
+    
+    def save(self):
+        self.io['fs'] = self.root
+        self.io.sync()
+            
+    def help(self, cmd):
+        print ('COMMANDS: mkdir, ls, chdir, rmdir, create, read, mv, cp, rm, exit')
+
+    def exit(self, cmd):
+        sys.exit(0)
+
+def main():
+    fs = FileSystem()
+    while True:
+        cmd = input('> ').split(' ');
+        method = None
+        try:
+            method = getattr(fs, cmd[0])
+        except AttributeError:
+            print ('Invalid command. Type "help".')
+        if method is not None and cmd[0] in FileSystem.COMMANDS and callable(method):
+            method(cmd)
+            fs.save()
+        else:
+            print ('Invalid command. Type "help".')
+main()      
         
         
         

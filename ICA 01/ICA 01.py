@@ -1,14 +1,15 @@
-def tolk():
-    liste = ['X','Y','Z', 'Y', 'Z']
+def Encode():
     string = []
-    for x in liste:
+    prompt = input("Skriv inn hva du vil kode ned: ")
+    prompt.split()
+    for x in prompt:
         if x == "X":
             string.append("01")
         elif x == "Y":
             string.append("10")
         elif x == "Z":
             string.append("11")
-    print string
+    print (string)
     
-tolk()
+Encode()
     
