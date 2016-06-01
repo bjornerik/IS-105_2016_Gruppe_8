@@ -1,11 +1,4 @@
-# The message to encode
-message = input("Write a message to encode here: ")
-# message = "BCCACBCCCCCCCCCCCACCCA"
-
 def code():
-    '''
-    Implements an initial table for LZW algorithm 
-    '''
     tab = {}
     tab[1] = 'a'
     tab[2] = 'b'
@@ -36,30 +29,37 @@ def code():
     
     return tab
 
-# Function to encode the message that the user typed
 def encode(message):
-    tab = code()
+    table = code()
     string = ""
-    code4string = []
+    code_for_string = []
     for byte in message:
         symbol = byte
-        if (string + symbol) in tab.values():
+        if (string + symbol) in table.values():
             string = string + symbol
         else:
-            for value in tab.iteritems():
-                if value == string:
-                    code4string.append(key)
-            tab[max(tab.keys())+1] = string + symbol
+            for k,v in table.iteritems:
+                if v == string:
+                    code_for_string.append(k)
+            table[max(table.keys())+1] = string + symbol
             string = symbol
-    for value in tab.iteritems():
-        if value == string:
-            code4string.append(key)
-    # Print the table
-    print (tab)
-    return code4string
-# Print the encoded message   
-print (encode(message))
+    for k,v in table.iteritems():
+        if v == string:
+            code_for_string.append(k)
+    print (table)
+    return code_for_string
 
 def test():
-    testMessage = "This is a test message. Hi."
+    testMessage = "Vi er en gruppe som liker koding"
     print (encode(testMessage))
+    
+def loop():
+    while x:
+        message = input("Skriv inn hva du vil kode")
+        if message == "quit":
+            x = False
+        else:
+            print ("Dette er resultatet: " + encode(message))
+    
+test()
+loop()
