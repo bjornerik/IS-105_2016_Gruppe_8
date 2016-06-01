@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Gruppe 13: Morten Amundsen, Nora Krogh, Erlend Sætre, Joakim Kilen, Marius Fosseli
-
 # The message to encode
 message = input("Write a message to encode here: ")
 # message = "BCCACBCCCCCCCCCCCACCCA"
