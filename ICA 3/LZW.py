@@ -26,6 +26,10 @@ def code():
     tab[23] = 'x'
     tab[24] = 'y'
     tab[25] = 'z'
+    tab[26] = ' '
+    tab[27] = ','
+    tab[28] = '.'
+    tab[29] = '!'
     
     return tab
 
@@ -50,7 +54,7 @@ def encode(message):
     return code_for_string
 
 def test():
-    testMessage = "Vi er en gruppe som liker koding"
+    testMessage = message
     print (encode(testMessage))
     
 def loop():
@@ -61,5 +65,7 @@ def loop():
         else:
             print ("Dette er resultatet: " + encode(message))
     
+message = open('hamlet.txt','r')
+
 test()
-loop()
+

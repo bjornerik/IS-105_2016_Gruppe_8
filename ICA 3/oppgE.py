@@ -8,7 +8,7 @@ def encode(order):
         if len(str2) == 8:
             helper = int(str2,2)
             if helper in danger:
-                str3 = chr(222)+str(order) #222 is choosable, may be another ASCII one
+                str3 = chr(222)+str(order)
                 str2 = ""
                 break
             else:
